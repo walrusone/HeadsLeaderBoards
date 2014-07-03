@@ -129,9 +129,9 @@ public class AssignCommand implements CommandExecutor {
             		}
             		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
                 	if (lbs.contains(args[2].toLowerCase())) {
-                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".statDisplay", args[3].toLowerCase());
+                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".statDisplay", args[3]);
                     	HeadLeaderBoards.get().fileClass.saveCustomConfig();
-                		sender.sendMessage(ChatColor.GREEN + "Statdisplay for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3].toLowerCase());
+                		sender.sendMessage(ChatColor.GREEN + "Statdisplay for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
                     	return true;
                 		} else {
                         	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
