@@ -1,0 +1,12 @@
+#Default Config
+#For the plugin to work, you must fill in the MYSLQ Database login info.
+headsleaderboards: 
+  enabled: false
+  updateInterval: 5
+database:
+  hostname: localhost
+  port: 3306
+  database: database
+  username: username
+  password: password
+leaderboards: ""
