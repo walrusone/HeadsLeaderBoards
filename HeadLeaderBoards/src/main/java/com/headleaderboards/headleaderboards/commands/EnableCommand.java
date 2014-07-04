@@ -26,7 +26,12 @@ public class EnableCommand implements CommandExecutor {
     		if (state.equalsIgnoreCase("true") || state.equalsIgnoreCase("false")) {
     			HeadLeaderBoards.get().getConfig().set("headsleaderboards.enabled", Boolean.valueOf(state));
             	HeadLeaderBoards.get().saveConfig();
-        		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Enabled");
+            	if (state.equalsIgnoreCase("true")) {
+            		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Enabled");
+            	}
+            	if (state.equalsIgnoreCase("false")) {
+            		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Disabled");
+            	}
         		return true;
     		}
         	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable plugin <state>");
@@ -41,7 +46,12 @@ public class EnableCommand implements CommandExecutor {
     		if (state.equalsIgnoreCase("true") || state.equalsIgnoreCase("false")) {
     			HeadLeaderBoards.get().fileClass.getCustomConfig().set(scommand + ".enabled", Boolean.valueOf(state));
             	HeadLeaderBoards.get().fileClass.saveCustomConfig();
-        		sender.sendMessage(ChatColor.GREEN + "Leaderboard " + ChatColor.BLUE + scommand + ChatColor.GREEN + " Has Been Enabled");
+        		if (state.equalsIgnoreCase("true")) {
+        			sender.sendMessage(ChatColor.GREEN + "Leaderboard " + ChatColor.BLUE + scommand + ChatColor.GREEN + " Has Been Enabled");
+        		}
+        		if (state.equalsIgnoreCase("false")) {
+        			sender.sendMessage(ChatColor.GREEN + "Leaderboard " + ChatColor.BLUE + scommand + ChatColor.GREEN + " Has Been Disabled");
+        		}
         		return true;
     		}
     	}
