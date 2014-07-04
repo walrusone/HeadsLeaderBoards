@@ -51,8 +51,8 @@ public class SignUpdater {
                 			    	          Sign s  = (Sign) b.getState();
                 			    	          s.setLine(0, ChatColor.BOLD + "" + ChatColor.BLACK + Integer.toString(j));                          
                 			    	          s.setLine(1, ChatColor.DARK_BLUE + name);
-                			    	          s.setLine(2, "");
-                			    	          s.setLine(3, ChatColor.BOLD + "" + ChatColor.DARK_GREEN + statdisplay + ": " + Integer.toString(stat)); 
+                			    	          s.setLine(2, ChatColor.BOLD + "" + ChatColor.DARK_RED + statdisplay);
+                			    	          s.setLine(3, ChatColor.BOLD + "" + ChatColor.DARK_GREEN + Integer.toString(stat)); 
                 	                          s.update();
                 	                          try {       
                 	                          	Block h1 = b.getRelative(BlockFace.UP, 1);

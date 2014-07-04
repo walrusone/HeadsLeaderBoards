@@ -129,6 +129,10 @@ public class AssignCommand implements CommandExecutor {
             		}
             		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
                 	if (lbs.contains(args[2].toLowerCase())) {
+                		if (args[3].length() > 11) {
+                    		sender.sendMessage(ChatColor.RED + "ERROR: Stat Display Names Must be Less Than 11 Characters!");
+                    		return true;
+                		}
                 		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".statDisplay", args[3]);
                     	HeadLeaderBoards.get().fileClass.saveCustomConfig();
                 		sender.sendMessage(ChatColor.GREEN + "Statdisplay for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
