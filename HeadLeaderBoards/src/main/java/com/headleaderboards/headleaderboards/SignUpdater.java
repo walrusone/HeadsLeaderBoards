@@ -1,6 +1,7 @@
 package com.headleaderboards.headleaderboards;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,7 +18,7 @@ import org.bukkit.block.Skull;
 
 public class SignUpdater {
 	
-    public void signUpdater(Connection conn) {
+    public void signUpdater() {
         try {
         		List<String> lbs = HeadLeaderBoards.get().getConfig().getStringList("leaderboards");
             	for (int i = 0; i < lbs.size(); i++) {
@@ -26,15 +27,29 @@ public class SignUpdater {
                 		String table = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".table");
                 		String statname = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".statName");
                 		String statdisplay = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".statDisplay");
-                		int statcolumn = HeadLeaderBoards.get().fileClass.getCustomConfig().getInt(leaderboard + ".statColumn");
-                		int uuidcolumn = HeadLeaderBoards.get().fileClass.getCustomConfig().getInt(leaderboard + ".nameColumn");
+                		String uuidname = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".nameColumn");
+                		int size = HeadLeaderBoards.get().fileClass.getCustomConfig().getInt(leaderboard + ".hlbSize");
+                		Boolean order = HeadLeaderBoards.get().fileClass.getCustomConfig().getBoolean(leaderboard + ".reverseOrder");
+        	        	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
+    	        		String hostname = HeadLeaderBoards.get().getConfig().getString("database.hostname");
+    	        		String port = HeadLeaderBoards.get().getConfig().getString("database.port");
+    	        		String database = HeadLeaderBoards.get().getConfig().getString("database.database");
+    	        		String username = HeadLeaderBoards.get().getConfig().getString("database.username");
+    	        		String password = HeadLeaderBoards.get().getConfig().getString("database.password");
+    	        		Connection conn = null;
+                		String orderMethod = "DESC";
                 		if (enabled == true) {
                 			try {
-                			PreparedStatement st = conn.prepareStatement("select * from " + table + " order by " + statname);
+                		    if (order == true) {
+                		    	orderMethod = "ASC";
+                		                    		    }
+                		    if (pluginenabled == true) {
+           	            		conn = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
+                	        }
+                			PreparedStatement st = conn.prepareStatement("select " + uuidname + ", " + statname + " from " + table + " order by " + statname + " " + orderMethod + " LIMIT " + size);
                 	        ResultSet rs=st.executeQuery();
-                	        rs.afterLast();
                     	           int j = 0;
-                    	           while (rs.previous()) 
+                    	           while (rs.next()) 
                 	    	        { 
                 	    	          j++;
                 	    	          String t = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".signs." + j + ".world");
@@ -44,15 +59,22 @@ public class SignUpdater {
                 	                    	int y = HeadLeaderBoards.get().fileClass.getCustomConfig().getInt(leaderboard + ".signs." + j + ".y");
                 	                    	int z = HeadLeaderBoards.get().fileClass.getCustomConfig().getInt(leaderboard + ".signs." + j + ".z");
                 	                    	String facing = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".signs." + j + ".facing");
+                	                    	String line0Color = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".line0Color");
+                	                    	String line1Color = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".line1Color");
+                	                    	String line2Color = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".line2Color");
+                	                    	String line3Color = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".line3Color");
                 	                    	Block b = w.getBlockAt(x, y, z);
                 	                        if(b.getType() == Material.WALL_SIGN){
-                	                          String name = rs.getString(uuidcolumn); // read 1st column as text
-                	  		    	          int stat = rs.getInt(statcolumn); // read 3rd column as int 
+                	                          String name = rs.getString(1); // read 1st column as text
+                	  		    	          int stat = rs.getInt(2); // read 3rd column as int
                 			    	          Sign s  = (Sign) b.getState();
-                			    	          s.setLine(0, ChatColor.BOLD + "" + ChatColor.BLACK + Integer.toString(j));                          
-                			    	          s.setLine(1, ChatColor.DARK_BLUE + name);
-                			    	          s.setLine(2, ChatColor.BOLD + "" + ChatColor.DARK_RED + statdisplay);
-                			    	          s.setLine(3, ChatColor.BOLD + "" + ChatColor.DARK_GREEN + Integer.toString(stat)); 
+                			    	          try {
+                			    	        	  s.setLine(0, ChatColor.getByChar(line0Color) + "" + ChatColor.BOLD + Integer.toString(j));
+                    			    	          s.setLine(1, ChatColor.getByChar(line1Color) + name);
+                    			    	          s.setLine(2, ChatColor.getByChar(line2Color) + "" + ChatColor.BOLD +  statdisplay);
+                    			    	          s.setLine(3, ChatColor.getByChar(line3Color) + "" + ChatColor.BOLD +  String.valueOf(stat)); 
+                			    	          } catch (IllegalArgumentException iae) {  
+                			    	          }
                 	                          s.update();
                 	                          try {       
                 	                          	Block h1 = b.getRelative(BlockFace.UP, 1);
@@ -84,12 +106,10 @@ public class SignUpdater {
                 	                          } catch (NullPointerException e) {
                 	                          }
                 	                        }
-                                      if (i == 20) { 
-                                    	  break;
-                                      }
                 	    	        }
                 	        }
                     	    rs.close();
+                    	    conn.close();
                     	}   catch (SQLException e) {
                 	        // TODO Auto-generated catch block
                 	        e.printStackTrace();

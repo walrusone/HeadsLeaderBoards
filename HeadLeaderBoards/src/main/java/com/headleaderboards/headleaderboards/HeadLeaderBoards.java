@@ -1,10 +1,6 @@
 package com.headleaderboards.headleaderboards;
 
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -21,7 +17,6 @@ public class HeadLeaderBoards extends JavaPlugin {
     private static HeadLeaderBoards instance;
     SignUpdater updater = new SignUpdater();
     public CustomYML fileClass = new CustomYML(this);
-    Connection conn = null;
 	
     public void onEnable() {
     	instance = this;
@@ -43,7 +38,7 @@ public class HeadLeaderBoards extends JavaPlugin {
                     }
                 	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
                 	if (pluginenabled == true) {
-                		updater.signUpdater(conn);
+                		updater.signUpdater();
                         return true;
                 	}
             	} else {
@@ -53,45 +48,17 @@ public class HeadLeaderBoards extends JavaPlugin {
             	return true;
             }
         });
-        try {
-        	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
-        	if (pluginenabled == true) {
-        		String hostname = HeadLeaderBoards.get().getConfig().getString("database.hostname");
-        		String port = HeadLeaderBoards.get().getConfig().getString("database.port");
-        		String database = HeadLeaderBoards.get().getConfig().getString("database.database");
-        		String username = HeadLeaderBoards.get().getConfig().getString("database.username");
-        		String password = HeadLeaderBoards.get().getConfig().getString("database.password");
-            	try {
-            		conn = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
-            	}
-	            catch (SQLException e) {
-			    // TODO Auto-generated catch block
-			    e.printStackTrace();
-                }
-        		this.getServer().getScheduler();
+          		this.getServer().getScheduler();
         		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
         			public void run() {
-        		        updater.signUpdater(conn);
+        		        updater.signUpdater();
                 }}, 0, (20 * timer));
         	}
-            } catch (NullPointerException e) {
-            }
-        }
     
     public void onDisable() {
         getLogger().info("HeadLeaderBoards Disabled");
         saveConfig();
         fileClass.saveCustomConfig();
-        Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
-        if (pluginenabled == true) {
-        	try {
-        		conn.close();
-    	    }
-            catch (SQLException e) {
-	        // TODO Auto-generated catch block
-	        e.printStackTrace();
-            }
-        }
     }
     
     public static HeadLeaderBoards get() {

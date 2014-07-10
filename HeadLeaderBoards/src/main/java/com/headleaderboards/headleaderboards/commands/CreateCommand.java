@@ -33,13 +33,13 @@ public class CreateCommand implements CommandExecutor {
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".table", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".statName", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".statDisplay", "");
-    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".statColumn", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".nameColumn", "");
-    	int i = 1;
-    	while (i <= 20) {
-    		HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".signs." + i + ".world", null);
-    		i++;
-    	}
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".hlbSize", "5");
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".reverseOrder", false);
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line0Color", "0");
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line1Color", "1");
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line2Color", "4");
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line3Color", "5");
 		sender.sendMessage(ChatColor.GREEN + "Leaderboard " + hlbname + " Successfully Created!");
     	HeadLeaderBoards.get().fileClass.saveCustomConfig();
     	HeadLeaderBoards.get().saveConfig();

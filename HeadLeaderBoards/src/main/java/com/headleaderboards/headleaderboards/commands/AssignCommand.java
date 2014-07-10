@@ -15,10 +15,10 @@ public class AssignCommand implements CommandExecutor {
 		
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    	List<String> subcommands = Arrays.asList("hostname", "port", "username", "password", "database", "table", "statname", "statdisplay", "statcolumn", "namecolumn", "updateinterval");
+    	List<String> subcommands = Arrays.asList("hostname", "port", "username", "password", "database", "table", "statname", "statdisplay", "namecolumn", "hlbsize", "reverseorder", "updateinterval");
     	if (args.length < 2 || args.length > 4) {
         	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign <subcommand>");
-        	sender.sendMessage(ChatColor.RED + "SubCommands: updateInterval, hostname, port, username, password, database, table, statname, statdisplay, statcolumn, namecolumn, updateinterval");
+        	sender.sendMessage(ChatColor.RED + "SubCommands: updateInterval, hostname, port, username, password, database, table, statname, statdisplay, namecolumn, hlbsize, reverseorder, updateinterval");
             return true;
         }
             String scommand = args[1].toLowerCase();
@@ -40,10 +40,14 @@ public class AssignCommand implements CommandExecutor {
                     	sender.sendMessage(ChatColor.RED + "Where <port> is your mysql server PORT -- Usually 3306");
                         return true;	
             		}
-            		HeadLeaderBoards.get().getConfig().set("database.port", Integer.parseInt(args[2]));
-                	HeadLeaderBoards.get().saveConfig();
-            		sender.sendMessage(ChatColor.GREEN + "mySQL Port has been set to " + ChatColor.BLUE + args[2]);
-            		return true;
+            		if (isInteger(args[2])) {
+            			HeadLeaderBoards.get().getConfig().set("database.port", Integer.parseInt(args[2]));
+                    	HeadLeaderBoards.get().saveConfig();
+                		sender.sendMessage(ChatColor.GREEN + "mySQL Port has been set to " + ChatColor.BLUE + args[2]);
+                		return true;
+            		} else {
+                    	sender.sendMessage(ChatColor.RED + "ERROR: <port> must be a number!");
+            		}
             	}
             	if (scommand.equalsIgnoreCase("username")) {
             		if (args.length < 3 || args.length > 3) {
@@ -145,46 +149,73 @@ public class AssignCommand implements CommandExecutor {
                         	sender.sendMessage(ChatColor.RED + "Where <statdisplay> is how to want the stat written on the sign. For example Kills");
                 		}
             	}
-            	if (scommand.equalsIgnoreCase("statcolumn")) {
-            		if (args.length < 4) {
-                    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign statcolumn <leaderboard> <statcolumn>");
-                    	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
-                    	sender.sendMessage(ChatColor.RED + "Where <statcolumn> is the column number that represents your stat in the table");
-                        return true;	
-            		}
-            		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
-                	if (lbs.contains(args[2].toLowerCase())) {
-                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".statColumn", Integer.parseInt(args[3]));
-                    	HeadLeaderBoards.get().fileClass.saveCustomConfig();
-                		sender.sendMessage(ChatColor.GREEN + "mySQL StatColumn for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
-                    	return true;
-                		} else {
-                        	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
-                        	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
-                        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign statcolumn <leaderboard> <statcolumn>");
-                        	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
-                        	sender.sendMessage(ChatColor.RED + "Where <statcolumn> is the column number that represents your stat in the table");
-                		}
-            	}
             	if (scommand.equalsIgnoreCase("namecolumn")) {
             		if (args.length < 4) {
                     	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign namecolumn <leaderboard> <namecolumn>");
                     	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
-                    	sender.sendMessage(ChatColor.RED + "Where <namecolumn> is the column number that represents the usernames in the table");
+                    	sender.sendMessage(ChatColor.RED + "Where <namecolumn> is the column name that represents the usernames in the table");
                         return true;	
             		}
             		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
                 	if (lbs.contains(args[2].toLowerCase())) {
-                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".nameColumn", Integer.parseInt(args[3]));
+                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".nameColumn", args[3]);
                     	HeadLeaderBoards.get().fileClass.saveCustomConfig();
-                		sender.sendMessage(ChatColor.GREEN + "mySQL StatColumn for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
+                		sender.sendMessage(ChatColor.GREEN + "mySQL nameColumn for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
                     	return true;
                 		} else {
                         	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
                         	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
                         	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign namecolumn <leaderboard> <namecolumn>");
                         	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
-                        	sender.sendMessage(ChatColor.RED + "Where <namecolumn> is the column number that represents the usernames in the table");
+                        	sender.sendMessage(ChatColor.RED + "Where <namecolumn> is the column name that represents the usernames in the table");
+                		}
+            	}
+            	if (scommand.equalsIgnoreCase("hlbsize")) {
+            		if (args.length < 4) {
+                    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign hlbsize <leaderboard> <hlbsize>");
+                    	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                    	sender.sendMessage(ChatColor.RED + "Where <hlbsize> is the number of places you want in the leaderboard");
+                        return true;	
+            		}
+            		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
+                	if (lbs.contains(args[2].toLowerCase())) {
+                		if (isInteger(args[3])) {
+                			HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".hlbSize", Integer.parseInt(args[3]));
+                        	HeadLeaderBoards.get().fileClass.saveCustomConfig();
+                    		sender.sendMessage(ChatColor.GREEN + "hlbsize for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
+                        	return true;
+                		} else {
+                        	sender.sendMessage(ChatColor.RED + "ERROR: <hlbsize> must be a number!");			
+                		}
+                		} else {
+                        	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
+                        	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
+                        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign hlbsize <leaderboard> <hlbsize>");
+                        	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                        	sender.sendMessage(ChatColor.RED + "Where <hlbsize> is the number of places you want in the leaderboard");
+                		}
+            	}
+            	if (scommand.equalsIgnoreCase("reverseOrder")) {
+            		if (args.length < 4) {
+                    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign reverseOrder <leaderboard> <state>");
+                    	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                    	sender.sendMessage(ChatColor.RED + "Where <state> is the true or false. When state is true, leaderboard will go from lowest to highest.");
+                        return true;	
+            		}
+            		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
+                	if (lbs.contains(args[2].toLowerCase())) {
+                		if (args[3].equalsIgnoreCase("true") || args[3].equalsIgnoreCase("false")) {
+                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".reverseOrder", Boolean.valueOf(args[3]));
+                    	HeadLeaderBoards.get().fileClass.saveCustomConfig();
+                		sender.sendMessage(ChatColor.GREEN + "reverseOrder for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
+                    	return true;
+                		}
+                		} else {
+                        	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
+                        	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
+                        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign hlbsize <leaderboard> <hlbsize>");
+                        	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                        	sender.sendMessage(ChatColor.RED + "Where <state> is the true or false. When state is true, leaderboard will go from lowest to highest.");
                 		}
             	}
             	if (scommand.equalsIgnoreCase("updateinterval")) {
@@ -193,16 +224,37 @@ public class AssignCommand implements CommandExecutor {
                     	sender.sendMessage(ChatColor.RED + "Where <time> is the time in seconds between leaderboard updates");
                         return true;	
             		}
-            		HeadLeaderBoards.get().getConfig().set("headsleaderboards.updateInterval", Integer.parseInt(args[2]));
-                	HeadLeaderBoards.get().saveConfig();
-            		sender.sendMessage(ChatColor.GREEN + "Leaderboards update interval has been set to " + ChatColor.BLUE + args[2] + " seconds");
-            		return true;
+            		if (isInteger(args[2])) {
+                		HeadLeaderBoards.get().getConfig().set("headsleaderboards.updateInterval", Integer.parseInt(args[2]));
+                    	HeadLeaderBoards.get().saveConfig();
+                		sender.sendMessage(ChatColor.GREEN + "Leaderboards update interval has been set to " + ChatColor.BLUE + args[2] + " seconds");
+                		return true;
+            		} else {
+                    	sender.sendMessage(ChatColor.RED + "ERROR: <updateinterval> must be a number!");
+            		}
             	}
             } else {
                	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign <subcommand>");
-            	sender.sendMessage(ChatColor.RED + "SubCommands: hostname, port, username, password, database, table, statname, statdisplay, statcolumn, namecolumn, updateinterval");
+            	sender.sendMessage(ChatColor.RED + "SubCommands: updateInterval, hostname, port, username, password, database, table, statname, statdisplay, namecolumn, hlbsize, reverseorder, updateinterval");
                 return true;
             }
             return true;
     }
+
+
+    public static boolean isInteger(String str)  
+    {  
+      try  
+      {  
+        int d = Integer.parseInt(str); 
+        if (d == 0) {
+        }
+      }  
+      catch(NumberFormatException nfe)  
+      {  
+        return false;  
+      }  
+      return true;  
+    }
+    
 }
