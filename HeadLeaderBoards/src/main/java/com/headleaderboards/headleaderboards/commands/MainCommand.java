@@ -26,7 +26,7 @@ public class MainCommand implements CommandExecutor {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
     	if (sender.hasPermission("hlb.commands")) {
         	if (args.length == 0) {
-            	sender.sendMessage(ChatColor.RED + "USAGE: /hbl <subcommand>");
+            	sender.sendMessage(ChatColor.RED + "USAGE: /hlb <subcommand>");
             	sender.sendMessage(ChatColor.RED + "Subcommands: create, delete, list, reload, assign, enable");
                 return true;
             }

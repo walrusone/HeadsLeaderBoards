@@ -30,11 +30,13 @@ public class CreateCommand implements CommandExecutor {
     	lbs.add(hlbname);
     	HeadLeaderBoards.get().getConfig().set("leaderboards", lbs);
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".enabled", false);
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".separateNameTable", false);
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".nameTable", "stats_players");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".table", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".statName", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".statDisplay", "");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".nameColumn", "");
-    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".hlbSize", "5");
+    	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".hlbSize", 5);
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".reverseOrder", false);
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line0Color", "0");
     	HeadLeaderBoards.get().fileClass.getCustomConfig().set(hlbname + ".line1Color", "1");

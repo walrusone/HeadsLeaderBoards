@@ -15,10 +15,10 @@ public class AssignCommand implements CommandExecutor {
 		
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-    	List<String> subcommands = Arrays.asList("hostname", "port", "username", "password", "database", "table", "statname", "statdisplay", "namecolumn", "hlbsize", "reverseorder", "updateinterval");
+    	List<String> subcommands = Arrays.asList("hostname", "port", "username", "password", "database", "table", "statname", "statdisplay", "namecolumn", "hlbsize", "reverseorder", "updateinterval", "separatenametable", "nametable");
     	if (args.length < 2 || args.length > 4) {
         	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign <subcommand>");
-        	sender.sendMessage(ChatColor.RED + "SubCommands: updateInterval, hostname, port, username, password, database, table, statname, statdisplay, namecolumn, hlbsize, reverseorder, updateinterval");
+        	sender.sendMessage(ChatColor.RED + "SubCommands: updateInterval, hostname, port, username, password, database, table, statname, statdisplay, namecolumn, hlbsize, reverseorder, updateinterval, separatemametable, nametable");
             return true;
         }
             String scommand = args[1].toLowerCase();
@@ -232,6 +232,50 @@ public class AssignCommand implements CommandExecutor {
             		} else {
                     	sender.sendMessage(ChatColor.RED + "ERROR: <updateinterval> must be a number!");
             		}
+            	}
+            	if (scommand.equalsIgnoreCase("nametable")) {
+            		if (args.length < 4) {
+                    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign nametable <leaderboard> <nametable>");
+                    	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                    	sender.sendMessage(ChatColor.RED + "Where <nametable> is the table that contains the list of playnames");
+                        return true;	
+            		}
+            		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
+                	if (lbs.contains(args[2].toLowerCase())) {
+                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".nameTable", args[3]);
+                    	HeadLeaderBoards.get().fileClass.saveCustomConfig();
+                		sender.sendMessage(ChatColor.GREEN + "mySQL nameTable for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
+                    	return true;
+                		} else {
+                        	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
+                        	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
+                        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign nametable <leaderboard> <nametable>");
+                        	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                        	sender.sendMessage(ChatColor.RED + "Where <nametable> is the table that contains the list of playnames");
+                		}
+            	}
+            	if (scommand.equalsIgnoreCase("separatenametable")) {
+            		if (args.length < 4) {
+                    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign separatenametable <leaderboard> <state>");
+                    	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                    	sender.sendMessage(ChatColor.RED + "Where <state> is either TRUE or FALSE");
+                    	sender.sendMessage(ChatColor.RED + "This setting should only be set to TRUE if your database uses a separate table to play name organization");
+                        return true;	
+            		}
+            		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
+                	if (lbs.contains(args[2].toLowerCase())) {
+                		HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[2].toLowerCase() + ".separateNameTable", Boolean.valueOf(args[3]));
+                    	HeadLeaderBoards.get().fileClass.saveCustomConfig();
+                		sender.sendMessage(ChatColor.GREEN + "separateNameTable for the leaderboard " + ChatColor.BLUE + args[2].toLowerCase() + ChatColor.GREEN + " has been set to " + ChatColor.BLUE + args[3]);
+                    	return true;
+                		} else {
+                        	sender.sendMessage(ChatColor.RED + "ERROR: " + args[2].toLowerCase() + " is not a valid leaderboard!");
+                        	sender.sendMessage(ChatColor.RED + "ERROR: You must create the leaderboard before assigning a database");
+                        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign separatenametable <leaderboard> <state>");
+                        	sender.sendMessage(ChatColor.RED + "Where <leaderboard> is the leaderboard you are setting the database for");
+                        	sender.sendMessage(ChatColor.RED + "Where <state> is either TRUE or FALSE");
+                        	sender.sendMessage(ChatColor.RED + "This setting should only be set to TRUE if your database uses a separate table to play name organization");
+                		}
             	}
             } else {
                	sender.sendMessage(ChatColor.RED + "USAGE: /hlb assign <subcommand>");
