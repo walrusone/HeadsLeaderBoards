@@ -1,12 +1,15 @@
 package com.headleaderboards.headleaderboards;
 
 
+import java.io.IOException;
+
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.mcstats.MetricsLite;
 
 import com.headleaderboards.headleaderboards.SignUpdater;
 import com.headleaderboards.headleaderboards.commands.MainCommand;
@@ -25,6 +28,12 @@ public class HeadLeaderBoards extends JavaPlugin {
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         reloadConfig();
+        try {
+            MetricsLite metrics = new MetricsLite(this);
+            metrics.start();
+        } catch (IOException e) {
+            // Failed to submit the stats :-(
+        }
         fileClass.reloadCustomConfig();
     	int timer = HeadLeaderBoards.get().getConfig().getInt("headsleaderboards.updateInterval");
         getCommand("hlb").setExecutor(new MainCommand());
