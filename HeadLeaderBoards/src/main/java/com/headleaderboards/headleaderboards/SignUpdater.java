@@ -43,8 +43,8 @@ public class SignUpdater {
     	        		String database = HeadLeaderBoards.get().getConfig().getString("database.database");
     	        		String username = HeadLeaderBoards.get().getConfig().getString("database.username");
     	        		String password = HeadLeaderBoards.get().getConfig().getString("database.password");
-    	        		String nameCol = HeadLeaderBoards.get().getConfig().getString(leaderboard + ".sepnameCol");
-    	        		String idCol = HeadLeaderBoards.get().getConfig().getString(leaderboard + ".sepIdCol");
+                		String nameCol = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".sepnameCol");
+                		String sepIdCol = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".sepIdCol");
     	        		Connection conn = null;
                 		String orderMethod = "DESC";
                 		if (enabled == true) {
@@ -56,7 +56,7 @@ public class SignUpdater {
            	            		conn = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
                 	        }
                 			if (separateNameTable == true) {
-                    		    PreparedStatement names = conn.prepareStatement("select " + nameCol + ", " + idCol + " from " + nameTable + " order by " + "player_id");
+                    		    PreparedStatement names = conn.prepareStatement("select " + sepIdCol + ", " + nameCol + " from " + nameTable + " order by " + sepIdCol);
                     	        ResultSet namess=names.executeQuery();
                  	            while (namess.next()) 
              	    	        { 
