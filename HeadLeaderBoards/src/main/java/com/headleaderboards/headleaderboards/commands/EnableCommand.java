@@ -13,52 +13,39 @@ public class EnableCommand implements CommandExecutor {
 
 	@Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-		if (args.length < 3 || args.length > 3) {
-        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable plugin <state>");
-        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable <leaderboard> <state>");
-        	sender.sendMessage(ChatColor.RED + "<state> is either true or false");
-        	sender.sendMessage(ChatColor.RED + "<leaderboard> is the name of your created leaderboard");
-            return true;
-        }
-        String scommand = args[1].toLowerCase();
-		if (scommand.equalsIgnoreCase("plugin")) {
-    		String state = args[2].toLowerCase();
-    		if (state.equalsIgnoreCase("true") || state.equalsIgnoreCase("false")) {
-    			HeadLeaderBoards.get().getConfig().set("headsleaderboards.enabled", Boolean.valueOf(state));
-            	HeadLeaderBoards.get().saveConfig();
-            	if (state.equalsIgnoreCase("true")) {
-            		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Enabled");
-            	}
-            	if (state.equalsIgnoreCase("false")) {
-            		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Disabled");
-            	}
-        		return true;
-    		}
-        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable plugin <state>");
-        	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable <leaderboard> <state>");
-        	sender.sendMessage(ChatColor.RED + "<state> is either true or false");
-         	sender.sendMessage(ChatColor.RED + "<leaderboard> is the name of your created leaderboard");
-            return true;
+		if (args.length < 1 || args.length > 2) {
+			sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable    -   Enables/Disables the Plugin");
+			sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable <leaderboard name>   -   Enables/Disables the Leaderboard");
+			return true;
 		}
-		List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
-    	if (lbs.contains(scommand)) {
-    		String state = args[2].toLowerCase();
-    		if (state.equalsIgnoreCase("true") || state.equalsIgnoreCase("false")) {
-    			HeadLeaderBoards.get().fileClass.getCustomConfig().set(scommand + ".enabled", Boolean.valueOf(state));
+		if (args.length == 1) {
+			Boolean enabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
+			if (enabled) {
+    			HeadLeaderBoards.get().getConfig().set("headsleaderboards.enabled", Boolean.valueOf("false"));
+        		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Disabled");
+			} else {
+    			HeadLeaderBoards.get().getConfig().set("headsleaderboards.enabled", Boolean.valueOf("true"));
+        		sender.sendMessage(ChatColor.GREEN + "HeadsLeaderboards Has Been Enabled");
+			}
+			HeadLeaderBoards.get().saveConfig();
+			return true;
+		} else {
+			List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
+			if (lbs.contains(args[1].toLowerCase())) {
+				Boolean enabled = HeadLeaderBoards.get().fileClass.getCustomConfig().getBoolean(args[1].toLowerCase() + ".enabled");
+				if (enabled) {
+	    			HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[1].toLowerCase() + ".enabled", Boolean.valueOf("false"));
+	        		sender.sendMessage(ChatColor.GREEN + "The Leaderboard " + args[1] + " Has Been Disabled");
+				} else {
+	    			HeadLeaderBoards.get().fileClass.getCustomConfig().set(args[1].toLowerCase() + ".enabled", Boolean.valueOf("true"));
+	        		sender.sendMessage(ChatColor.GREEN + "The Leaderboard " + args[1] + " Has Been Enabled");
+				}
             	HeadLeaderBoards.get().fileClass.saveCustomConfig();
-        		if (state.equalsIgnoreCase("true")) {
-        			sender.sendMessage(ChatColor.GREEN + "Leaderboard " + ChatColor.BLUE + scommand + ChatColor.GREEN + " Has Been Enabled");
-        		}
-        		if (state.equalsIgnoreCase("false")) {
-        			sender.sendMessage(ChatColor.GREEN + "Leaderboard " + ChatColor.BLUE + scommand + ChatColor.GREEN + " Has Been Disabled");
-        		}
-        		return true;
-    		}
-    	}
-    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable plugin <state>");
-    	sender.sendMessage(ChatColor.RED + "USAGE: /hlb enable <leaderboard> <state>");
-    	sender.sendMessage(ChatColor.RED + "<state> is either true or false");
-    	sender.sendMessage(ChatColor.RED + "<leaderboard> is the name of your created leaderboard");
-        return true;
-    }
+    			return true;
+			} else {
+				sender.sendMessage(ChatColor.RED + "There is no Leaderboard names \"" + args[1] + "\"");
+				return true;
+			}
+		}
+	}
 }

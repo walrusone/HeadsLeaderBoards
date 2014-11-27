@@ -2,7 +2,7 @@
 #For the plugin to work, you must fill in the MYSLQ Database login info.
 headsleaderboards: 
   enabled: false
-  updateInterval: 5
+  updateInterval: 30
 database:
   hostname: localhost
   port: 3306

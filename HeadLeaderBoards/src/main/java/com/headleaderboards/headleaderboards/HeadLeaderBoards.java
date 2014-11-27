@@ -11,20 +11,21 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.mcstats.MetricsLite;
 
-import com.headleaderboards.headleaderboards.SignUpdater;
 import com.headleaderboards.headleaderboards.commands.MainCommand;
 import com.headleaderboards.headleaderboards.listeners.BlockListener;
+import com.headleaderboards.headleaderboards.listeners.ChatListener;
  
 public class HeadLeaderBoards extends JavaPlugin {
 
     private static HeadLeaderBoards instance;
-    SignUpdater updater = new SignUpdater();
+    HeadSQL updater = new HeadSQL();
     public CustomYML fileClass = new CustomYML(this);
 	
     public void onEnable() {
     	instance = this;
         getLogger().info("HeadLeaderBoards Enabled");        
         Bukkit.getPluginManager().registerEvents(new BlockListener(), this);
+        Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
         reloadConfig();
@@ -47,7 +48,11 @@ public class HeadLeaderBoards extends JavaPlugin {
                     }
                 	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
                 	if (pluginenabled == true) {
-                		updater.signUpdater();
+                		Bukkit.getScheduler().runTaskAsynchronously(HeadLeaderBoards.get(), new Runnable() {
+                			public void run() {
+                		        updater.dataQuery();
+                        }});
+                		updater.dataQuery();
                         return true;
                 	}
             	} else {
@@ -58,9 +63,9 @@ public class HeadLeaderBoards extends JavaPlugin {
             }
         });
           		this.getServer().getScheduler();
-        		this.getServer().getScheduler().scheduleSyncRepeatingTask(this, new Runnable() {
+        		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
         			public void run() {
-        		        updater.signUpdater();
+        		        updater.dataQuery();
                 }}, 0, (20 * timer));
         	}
     

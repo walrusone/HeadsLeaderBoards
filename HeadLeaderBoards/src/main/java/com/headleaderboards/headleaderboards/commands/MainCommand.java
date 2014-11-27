@@ -18,8 +18,8 @@ public class MainCommand implements CommandExecutor {
         subCommandMap.put("create", new CreateCommand());
         subCommandMap.put("delete", new DeleteCommand());
         subCommandMap.put("list", new ListCommand());
-        subCommandMap.put("assign", new AssignCommand());
         subCommandMap.put("enable", new EnableCommand());
+        subCommandMap.put("setup", new SetupCommand());
     }
 
     @Override
@@ -27,7 +27,7 @@ public class MainCommand implements CommandExecutor {
     	if (sender.hasPermission("hlb.commands")) {
         	if (args.length == 0) {
             	sender.sendMessage(ChatColor.RED + "USAGE: /hlb <subcommand>");
-            	sender.sendMessage(ChatColor.RED + "Subcommands: create, delete, list, reload, assign, enable");
+            	sender.sendMessage(ChatColor.RED + "Subcommands: create, delete, list, reload, setup, enable");
                 return true;
             }
 
