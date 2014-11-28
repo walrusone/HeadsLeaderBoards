@@ -1,6 +1,6 @@
 name: HeadLeaderBoards
 main: com.headleaderboards.headleaderboards.HeadLeaderBoards
-version: 2.0
+version: 2.0.2
 
 commands:
    hlb:

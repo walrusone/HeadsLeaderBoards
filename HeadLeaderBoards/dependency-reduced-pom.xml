@@ -3,7 +3,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.headleaderboards</groupId>
   <artifactId>HeadLeaderBoards</artifactId>
-  <version>V2.0</version>
+  <version>V2.0.2</version>
   <build>
     <plugins>
       <plugin>

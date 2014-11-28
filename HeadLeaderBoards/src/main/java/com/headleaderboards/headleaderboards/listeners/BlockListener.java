@@ -20,8 +20,9 @@ public class BlockListener implements Listener {
 	
     @EventHandler
     public void signPlaced(SignChangeEvent event) {
-        String[] a= event.getLines();
-        if (a[0].equals("[hlb]")) {
+        String[] a = event.getLines();
+        String line0 = ChatColor.stripColor(a[0]);
+        if (line0.equals("[hlb]")) {
         	if (event.getPlayer().hasPermission("hlb.signs")) {
                 Location signLocation = event.getBlock().getLocation();
                 World w = signLocation.getWorld();
@@ -29,8 +30,8 @@ public class BlockListener implements Listener {
             	Sign sign = (Sign) b.getState().getData();
             	BlockFace directionFacing = sign.getFacing();
             	if(b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST){
-            	   String hlbname = event.getLine(1);
-             	   String signnumber = event.getLine(2);
+            	   String hlbname = ChatColor.stripColor(a[1]);
+             	   String signnumber = ChatColor.stripColor(a[2]);
              	   Boolean exists = false;
                 	   List<String> lbs = (HeadLeaderBoards.get().getConfig().getStringList("leaderboards"));
                 	   for (int i = 0; i < lbs.size(); i++) {

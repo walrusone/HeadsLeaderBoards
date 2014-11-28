@@ -32,7 +32,7 @@ public class SignUpdater implements Callable<Object> {
     	case "dark green": return '2';
     	case "dark aqua": return '3';
     	case "dark red": return '4';
-    	case "dark purple": return  '5';
+    	case "dark purple": return '5';
     	case "gold": return '6';
     	case "gray": return '7';
     	case "dark gray": return '8';
@@ -48,7 +48,7 @@ public class SignUpdater implements Callable<Object> {
     	case "2": return '2';
     	case "3": return '3';
     	case "4": return '4';
-    	case "5": return  '5';
+    	case "5": return '5';
     	case "6": return '6';
     	case "7": return '7';
     	case "8": return '8';
@@ -80,7 +80,7 @@ public class SignUpdater implements Callable<Object> {
              	char line2Color = getColor(leaderboard, "line2Color");
              	char line3Color = getColor(leaderboard, "line3Color");
              	Block b = w.getBlockAt(x, y, z);
-             	String name = "";
+              	String name = "";
              		if(b.getType() == Material.WALL_SIGN){
              			name = namelist.get(i);
              			int stat = statlist.get(i);
