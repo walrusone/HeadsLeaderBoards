@@ -43,12 +43,12 @@ public class HeadSQL {
         	String sepIdCol = HeadLeaderBoards.get().fileClass.getCustomConfig().getString(leaderboard + ".sepIdCol");
         	Connection conn = null;
         	String orderMethod = "DESC";
-        	if (enabled == true) {
+        	if (enabled && pluginenabled) {
         		try {
-        	    if (order == true) {
+        	    if (order) {
         	    	orderMethod = "ASC";
         	    }
-        	    if (pluginenabled == true) {
+        	    if (pluginenabled) {
    	           		conn = DriverManager.getConnection("jdbc:mysql://" + hostname + ":" + port + "/" + database, username, password);
         	    }
         		if (separateNameTable == true) {
@@ -81,8 +81,8 @@ public class HeadSQL {
         	        // TODO Auto-generated catch block
         	        e.printStackTrace();
                     }
+            	Bukkit.getScheduler().callSyncMethod(HeadLeaderBoards.get(), new SignUpdater(namelist, statlist, leaderboard));
         		}
-        	Bukkit.getScheduler().callSyncMethod(HeadLeaderBoards.get(), new SignUpdater(namelist, statlist, leaderboard));
     	}
 	}
 }

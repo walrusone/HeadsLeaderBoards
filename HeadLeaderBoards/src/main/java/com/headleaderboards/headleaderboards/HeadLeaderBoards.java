@@ -47,13 +47,11 @@ public class HeadLeaderBoards extends JavaPlugin {
                         return true;
                     }
                 	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
-                	if (pluginenabled == true) {
+                	if (pluginenabled) {
                 		Bukkit.getScheduler().runTaskAsynchronously(HeadLeaderBoards.get(), new Runnable() {
                 			public void run() {
                 		        updater.dataQuery();
                         }});
-                		updater.dataQuery();
-                        return true;
                 	}
             	} else {
             		sender.sendMessage(ChatColor.RED + "YOU DO NOT HAVE PERMISSION TO USE THAT COMMAND");
