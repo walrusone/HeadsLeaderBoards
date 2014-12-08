@@ -26,7 +26,7 @@ public class CustomYML {
 
 		leaderboardsConfig = YamlConfiguration.loadConfiguration(leaderboardsFile);
 
-		InputStream defConfigStream = plugin.getResource("customConfigFile.yml");
+		InputStream defConfigStream = plugin.getResource("leaderboards.yml");
 		if(defConfigStream != null){
 			YamlConfiguration defConfig = YamlConfiguration.loadConfiguration(new InputStreamReader(defConfigStream));
             leaderboardsConfig.setDefaults(defConfig);

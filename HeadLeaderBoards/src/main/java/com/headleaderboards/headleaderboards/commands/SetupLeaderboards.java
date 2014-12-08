@@ -23,7 +23,7 @@ public class SetupLeaderboards extends Thread {
 	
 	public void run() {
 		properFlow = true;
-		while (properFlow && current <= 18 && current > 4) {
+		while (properFlow && current <= 27 && current > 4) {
 			Bukkit.getScheduler().callSyncMethod(HeadLeaderBoards.get(), new SyncMessage(player, current));
 			try {
 				properFlow = false;
@@ -37,16 +37,18 @@ public class SetupLeaderboards extends Thread {
 					break;
 				} else if (variable.equalsIgnoreCase("t")) {
 					current++;
-				} else if (current == 14) {
+				} else if (current == 23) {
 					if (isInteger(variable)){
 						Bukkit.getScheduler().callSyncMethod(HeadLeaderBoards.get(), new SyncData(variable, current, leaderboard));
 						current++;
 					}
-				} else if (current == 5 || current == 13) {
+				} else if (current == 5 || current == 9 || current == 12 || current == 15 || current == 22) {
 					if (isBoolean(variable)) {
 						Bukkit.getScheduler().callSyncMethod(HeadLeaderBoards.get(), new SyncData(toBoolean(variable), current, leaderboard));
 						if (current == 5 && toBoolean(variable).equalsIgnoreCase("false")) {
 							current = current + 4;
+						} else if ((current == 9 || current == 12 || current == 15) && toBoolean(variable).equalsIgnoreCase("false")) {
+							current = current + 3;
 						} else {
 							current++;
 						}

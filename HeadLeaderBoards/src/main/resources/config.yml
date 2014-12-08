@@ -3,6 +3,7 @@
 headsleaderboards: 
   enabled: false
   updateInterval: 30
+  debugMode: false
 database:
   hostname: localhost
   port: 3306

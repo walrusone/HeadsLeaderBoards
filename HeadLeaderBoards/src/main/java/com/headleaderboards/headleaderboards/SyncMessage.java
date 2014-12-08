@@ -38,25 +38,43 @@ public class SyncMessage implements Callable<Object> {
 				break;
 		case 8: text = "Enter the name of Column that contains the Player Ids!";
 				break;
-		case 9: text = "Enter the name of the MySQL Table that contains the Stat Data!";
+		case 9: text = "Do you want to sort your stats by World?";
 				break;
-		case 10: text = "Enter the name of the Column that contains the Stat Data!";
+		case 10: text = "What is the name of the Column that contains the world data?";
 				break;
-		case 11: text = "Enter the Title you would like to see displayed on the Sign! The Display name of the Stat!";
+		case 11: text = "What world do you want to sort the data for?";
 				break;
-		case 12: text = "Enter the name of the Column that contains the Player Names! (If your MySQL Database has a separate Column for Player Names, then this is the name of the Column that contains Player Ids!)";
+		case 12: text = "Do you wish to use a custom column to sort your stats?";
 				break;
-		case 13: text = "Do you wish to have the Data sorted in Reverse Order?";
+		case 13: text = "What is the name of the Column that contains the custom data?";
 				break;
-		case 14: text = "Enter the desired length of the Leaderboard";
+		case 14: text = "What custom data value (or values) do you want to sort the data for? (Separate Values with commas)";
 				break;
-		case 15: text = "What color do you want Line 1 to Appear (Minecraft Color Codes)!";
+		case 15: text = "Do you wish to use a 2nd custom column to sort your stats?";
 				break;
-		case 16: text = "What color do you want Line 2 to Appear (Minecraft Color Codes)!";
+		case 16: text = "What is the name of the Column that contains the custom data?";
 				break;
-		case 17: text = "What color do you want Line 3 to Appear (Minecraft Color Codes)!";
+		case 17: text = "What custom data value (or values) do you want to sort the data for? (Separate Values with commas)";
 				break;
-		case 18: text = "What color do you want Line 4 to Appear (Minecraft Color Codes)!";
+		case 18: text = "Enter the name of the MySQL Table that contains the Stat Data!";
+				break;
+		case 19: text = "Enter the name of the Column that contains the Stat Data!";
+				break;
+		case 20: text = "Enter the Title you would like to see displayed on the Sign! The Display name of the Stat!";
+				break;
+		case 21: text = "Enter the name of the Column that contains the Player Names! (If your MySQL Database has a separate Column for Player Names, then this is the name of the Column that contains Player Ids!)";
+				break;
+		case 22: text = "Do you wish to have the Data sorted in Reverse Order?";
+				break;
+		case 23: text = "Enter the desired length of the Leaderboard";
+				break;
+		case 24: text = "What color do you want Line 1 to Appear (Minecraft Color Codes)!";
+				break;
+		case 25: text = "What color do you want Line 2 to Appear (Minecraft Color Codes)!";
+				break;
+		case 26: text = "What color do you want Line 3 to Appear (Minecraft Color Codes)!";
+				break;
+		case 27: text = "What color do you want Line 4 to Appear (Minecraft Color Codes)!";
 				break;
 		case 98: text = "Exiting Setup!";
 				break;	
@@ -74,7 +92,7 @@ public class SyncMessage implements Callable<Object> {
 		if (current <= 4) {
 			sender.sendMessage(ChatColor.RED + getMessage());
 			ChatListener.setOne(sender.getName(), System.currentTimeMillis());
-		} else if (current <= 18 && current > 4) {
+		} else if (current <= 27 && current > 4) {
 			sender.sendMessage(ChatColor.RED + getMessage());
 			ChatListener.setTwo(sender.getName(), System.currentTimeMillis());
 		} else {

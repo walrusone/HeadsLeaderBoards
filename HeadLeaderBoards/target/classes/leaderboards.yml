@@ -1,0 +1,30 @@
+
+# leaderboard:						//Name of the Leaderboard
+#  enabled: false                 	//Enables the leaderboard. 
+#  separateNameTable: 				
+#    enabled: false					//Enable separateNameTable if the player names are stored in a different table than the stat you wish to display.
+#    nameTable: stats_players		//The name of the Table that contains the Player Names.
+#    sepNameCol: name				//The name of the Column within the Table that contains the Player Names.
+#    sepIdCol: player_id			//The name of the Column within the Table that contains the Player Ids.
+#  sortByWorld:
+#    enabled: false					//Enable sortByWorld if you want to sort the stats base by the world the player was in.
+#    worldCol: world				//The name of the Column in the Table that contains the World Names.
+#    worldName: world				//The name of the World that you want to sort the data by.
+#  customColumn:
+#    enabled: false					//Enable customColumn if you want to sort the stats by another variable that is contained in a separate column (Example: snapshots in Stats).
+#    customCol: customCol			//The name of the Column in the Table that contains the custom data.
+#    rowValues: rowValues			//The values of custom data that you want included in the sort (more than one value can be used by separating values with commas).
+#  customColumn2:
+#    enabled: false					//Enable customColumn2 if you want to sort the stats by a second variable that is contained in a separate column (Example: type of Mob).
+#    customCol: customCol			//The name of the Column in the Table that contains the custom data.
+#    rowValues: rowValues			//The values of custom data that you want included in the sort (more than one value can be used by separating values with commas).
+#  statTable: testStats				//The name of the Table that contains the Stat data.
+#  statName: testStats				//The name of the column that contains the Stat Data.
+#  statDisplay: Test				//How you want the Stat to be Displayed on the Sign (Example: Kills).
+#  nameColumn: player				//The name of the column that contains the player names. However if you are using separateNameTable, this becomes the name of the column in the Stats Table that contains the Player Ids.
+#  hlbSize: 5						//The Desired length of the leaderboard.
+#  reverseOrder: false				//Enable this setting to do reversed leaderboards.
+#  line0Color: black				//Set the color of the first line on the sign.
+#  line1Color: dark blue			//Set the color of the second line on the sign.
+#  line2Color: dark red				//Set the color of the third line on the sign.
+#  line3Color: dark purple			//Set the color of the fourth line on the sign.
