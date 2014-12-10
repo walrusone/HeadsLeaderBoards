@@ -24,7 +24,8 @@
 #  nameColumn: player				//The name of the column that contains the player names. However if you are using separateNameTable, this becomes the name of the column in the Stats Table that contains the Player Ids.
 #  hlbSize: 5						//The Desired length of the leaderboard.
 #  reverseOrder: false				//Enable this setting to do reversed leaderboards.
-#  line0Color: black				//Set the color of the first line on the sign.
-#  line1Color: dark blue			//Set the color of the second line on the sign.
-#  line2Color: dark red				//Set the color of the third line on the sign.
-#  line3Color: dark purple			//Set the color of the fourth line on the sign.
+#  statOnSameLine: false			//Enable this setting to have stat displayed on same line as statDisplay
+#  line0Format: black, bold, header				//LINEFORMATTING: Set the color, then the Format, then the "Item to Display"
+#  line1Format: dark blue, normal, name			//The Color Can be: black, dark blue, dark green, dark aqua, dark red, dark purple, gold, gray, dark gray, blue, green, aqua, red, light purple, yellow or white.
+#  line2Format: dark red, bold, statDisplay		//The Format Can be:  normal, bold, itallic, underline or magic.
+#  line3Format: dark purple, bold, stat			//The "Item to Display" can be: name, stat, statdisplay, header, blank or custom. If you use custom add a comma and then put your custom text. 

@@ -21,7 +21,7 @@ public class HeadLeaderBoards extends JavaPlugin {
 
     private static HeadLeaderBoards instance;
     private Database database;
-    private HeadSQL updater = new HeadSQL();
+    private LeaderController lcontroller;
     public CustomYML fileClass = new CustomYML(this);
 	
     public void onEnable() {
@@ -31,6 +31,7 @@ public class HeadLeaderBoards extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new ChatListener(), this);
         getConfig().options().copyDefaults(true);
         saveDefaultConfig();
+        saveConfig();
         reloadConfig();
         try {
             MetricsLite metrics = new MetricsLite(this);
@@ -42,8 +43,9 @@ public class HeadLeaderBoards extends JavaPlugin {
         fileClass.saveCustomConfig();
         fileClass.reloadCustomConfig();
         database = new Database();
-        Boolean enabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
-    	int timer = HeadLeaderBoards.get().getConfig().getInt("headsleaderboards.updateInterval");
+        lcontroller = new LeaderController(getConfig().getStringList("leaderboards"));
+        Boolean enabled = getConfig().getBoolean("headsleaderboards.enabled");
+    	int timer = getConfig().getInt("headsleaderboards.updateInterval");
         if (enabled) {
             if (!database.checkConnection()) {
             	getLogger().info("HeadLeaderBoards: MySQL Database Information is not setup correctly!! Please check your Config Settings!!");
@@ -51,7 +53,7 @@ public class HeadLeaderBoards extends JavaPlugin {
           		this.getServer().getScheduler();
         		this.getServer().getScheduler().runTaskTimerAsynchronously(this, new Runnable() {
         			public void run() {
-        		        updater.dataQuery();
+        		        lcontroller.updateLeaderBoards();
                 }}, 0, (20 * timer));
             }
         }
@@ -64,12 +66,12 @@ public class HeadLeaderBoards extends JavaPlugin {
                     	sender.sendMessage(ChatColor.RED + "USAGE: /hlbupdate");
                         return true;
                     }
-                	Boolean pluginenabled = HeadLeaderBoards.get().getConfig().getBoolean("headsleaderboards.enabled");
+                	Boolean pluginenabled = getConfig().getBoolean("headsleaderboards.enabled");
                 	if (pluginenabled && database.checkConnection()) {
                 		sender.sendMessage(ChatColor.GREEN + "Leaderboards are being updated!");
                 		Bukkit.getScheduler().runTaskAsynchronously(HeadLeaderBoards.get(), new Runnable() {
                 			public void run() {
-                		        updater.dataQuery();
+                				lcontroller.updateLeaderBoards();
                         }});
                 	} else if (!pluginenabled) {
                 		sender.sendMessage(ChatColor.RED + "The Plugin is NOT Enabled!");
@@ -88,6 +90,7 @@ public class HeadLeaderBoards extends JavaPlugin {
     
     public void onDisable() {
         getLogger().info("HeadLeaderBoards Disabled");
+        lcontroller.saveLeaderBoards();
         saveConfig();
         fileClass.saveCustomConfig();
     }
@@ -98,6 +101,10 @@ public class HeadLeaderBoards extends JavaPlugin {
     
     public static Database getDB() {
         return instance.database;
+    }
+    
+    public static LeaderController getLC() {
+        return instance.lcontroller;
     }
     
 }

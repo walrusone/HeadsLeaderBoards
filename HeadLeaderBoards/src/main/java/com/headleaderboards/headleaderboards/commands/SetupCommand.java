@@ -10,7 +10,7 @@ import org.bukkit.command.CommandSender;
 import com.headleaderboards.headleaderboards.HeadLeaderBoards;
 
 public class SetupCommand implements CommandExecutor {
-	public static Setup setupRun;
+	public static SetupConfig setupRun;
 	public static SetupLeaderboards setupLRun;
 	
 	@Override
@@ -21,7 +21,7 @@ public class SetupCommand implements CommandExecutor {
 		}
 		if (args.length == 1) {
 			sender.sendMessage(ChatColor.GREEN + "Entering Setup: To exit type \"exit\". To leave a entry at it current value type \"t\". ");
-			setupRun = new Setup(sender);
+			setupRun = new SetupConfig(sender);
 			setupRun.start();
 			return true;
 		} else {
