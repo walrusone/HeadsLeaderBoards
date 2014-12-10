@@ -20,7 +20,7 @@ import com.headleaderboards.headleaderboards.database.Database;
 public class HeadLeaderBoards extends JavaPlugin {
 
     private static HeadLeaderBoards instance;
-    private Database database;
+    private static Database database;
     private LeaderController lcontroller;
     public CustomYML fileClass = new CustomYML(this);
 	
@@ -100,7 +100,11 @@ public class HeadLeaderBoards extends JavaPlugin {
     }
     
     public static Database getDB() {
-        return instance.database;
+        return database;
+    }
+    
+    public static void reloadDB() {
+         database = new Database();
     }
     
     public static LeaderController getLC() {

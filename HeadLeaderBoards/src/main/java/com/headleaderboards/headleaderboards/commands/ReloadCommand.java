@@ -20,6 +20,7 @@ public class ReloadCommand implements CommandExecutor {
     	HeadLeaderBoards.get().fileClass.reloadCustomConfig();
        	LeaderController lc = HeadLeaderBoards.getLC();
        	lc.loadLeaderBoards();
+       	HeadLeaderBoards.reloadDB();
     	sender.sendMessage(ChatColor.GREEN + "Reload Complete!");
         return true;
     }

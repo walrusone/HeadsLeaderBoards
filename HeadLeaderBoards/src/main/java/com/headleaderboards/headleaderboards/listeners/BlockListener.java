@@ -61,10 +61,10 @@ public class BlockListener implements Listener {
         Location blockLocation = event.getBlock().getLocation();
         World w = blockLocation.getWorld();
     	Block b = w.getBlockAt(blockLocation);
-    	Sign sign = (Sign) b.getState().getData();
-    	BlockFace directionFacing = sign.getFacing();
-    	String f = directionFacing.name();
 		if(b.getType() == Material.WALL_SIGN || b.getType() == Material.SIGN_POST){
+	    	Sign sign = (Sign) b.getState().getData();
+	    	BlockFace directionFacing = sign.getFacing();
+	    	String f = directionFacing.name();
     		int x = b.getX();
     		int y = b.getY();
     		int z = b.getZ();

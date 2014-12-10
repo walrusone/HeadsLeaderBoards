@@ -555,7 +555,7 @@ public class LeaderBoard {
 		@Override
 		public Object call() throws Exception {
 			for (Integer key : signs.keySet()) {
-				if (key < hlbSize) {
+				if (key <= hlbSize) {
 					header = headerList.get(key - 1);
 					Signs sign = signs.get(key);
 					World world = HeadLeaderBoards.get().getServer().getWorld(sign.world);
